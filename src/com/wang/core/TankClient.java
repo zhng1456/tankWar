@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -11,37 +13,13 @@ public class TankClient extends Frame{
 	public static final int GAME_WIDTH=800;
 	public static final int GAME_HEIGHT=600;
 	//坐标
-	int x=50;
-	int y=50;
+	Tank myTank=new Tank(50,50);
 	//利用缓冲解决闪烁的问题 
 	Image offScreenImage=null;
-	//每隔一段时间重画一次，让tank移动,用线程来实现
-	private class PaintThread implements Runnable{
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			//调用的是外部包装类的repaint
-			while(true){
-				repaint();//repaint先调用update，再调用paint
-				try {
-					Thread.sleep(20);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+	
 	@Override
 	public void paint(Graphics g) {
-		//取到原先的颜色
-		Color c=g.getColor();
-		g.setColor(Color.RED);
-		//指定矩形,画内切圆
-		g.fillOval(x,y,30,30);
-		//恢复
-		g.setColor(c);
-		y+=5;
+		myTank.draw(g);
 	}
 	@Override
 	public void update(Graphics g) {
@@ -73,6 +51,8 @@ public class TankClient extends Frame{
 		//不允许改变窗口大小
 		this.setResizable(false);
 		this.setBackground(Color.GREEN);
+		//加入键盘监听
+		this.addKeyListener(new KeyMonitor());
 		setVisible(true);
 		//启动线程
 		new Thread(new PaintThread()).start();
@@ -82,4 +62,37 @@ public class TankClient extends Frame{
 		TankClient tc = new TankClient();
 		tc.lauchFrame();
 	}
+	//每隔一段时间重画一次，让tank移动,用线程来实现
+	private class PaintThread implements Runnable{
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			//调用的是外部包装类的repaint
+			while(true){
+				repaint();//repaint先调用update，再调用paint
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	private class KeyMonitor extends KeyAdapter{
+		//释放按键
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			myTank.keyReleased(e);
+		}
+		//键盘按键
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			myTank.keyPressed(e);
+		}
+		
+	}
 }
+	
