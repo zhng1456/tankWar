@@ -8,6 +8,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TankClient extends Frame{
 	public static final int GAME_WIDTH=800;
@@ -15,17 +18,21 @@ public class TankClient extends Frame{
 	//坦克
 	Tank myTank=new Tank(50,50,this);
 	//子弹
-	Missile m=null;
+	//Missile m=null;
+	List<Missile> missiles=new ArrayList<Missile>();
 	//利用缓冲解决闪烁的问题 
 	Image offScreenImage=null;
-	
 	@Override
 	public void paint(Graphics g) {
+		//显示子弹数量
+		g.drawString("missiles count:"+missiles.size(),10,50);
 		//画坦克
 		myTank.draw(g);
 		//画子弹
-		if(m!=null)
-		m.draw(g);
+		for(int i=0;i<missiles.size();++i){
+			Missile m=missiles.get(i);
+			m.draw(g);
+		}
 	}
 	@Override
 	public void update(Graphics g) {

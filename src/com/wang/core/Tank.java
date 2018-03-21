@@ -111,10 +111,6 @@ public class Tank {
 		int key = e.getKeyCode();
 		//改变坐标，内部类中，可直接访问外部类的属性
 		switch(key){
-		//按下ctrl键
-		case KeyEvent.VK_CONTROL:
-			tc.m=fire();
-			break;
 		case KeyEvent.VK_UP:
 			bU=true;
 			break;
@@ -147,6 +143,10 @@ public class Tank {
 		int key = e.getKeyCode();
 		//改变坐标，内部类中，可直接访问外部类的属性
 		switch(key){
+		//抬起ctrl键则发射炮弹
+		case KeyEvent.VK_CONTROL:
+			tc.missiles.add(fire());
+			break;
 		case KeyEvent.VK_UP:
 			bU=false;
 			break;
