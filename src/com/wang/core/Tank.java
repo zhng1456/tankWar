@@ -8,11 +8,16 @@ public class Tank {
 	//速度常量
 	public static final int XSPEED=5;
 	public static final int YSPEED=5;
+	//坦克大小常量
+	public static final int WIDTH=30;
+	public static final int HEIGHT=30;
 	private int x,y;
 	private boolean bL=false,bU=false,bR=false,bD=false;
-	//枚举类型，8个方向+停止状态
+	//枚举类型，坦克的方向，8个方向+停止状态
 	enum Direction {L,LU,U,RU,D,LD,R,RD,STOP};
 	private Direction dir=Direction.STOP;
+	//炮筒的方向
+	private Direction ptDir=Direction.D;
 	TankClient tc;
 	public Tank(int x, int y) {
 		this.x = x;
@@ -29,9 +34,36 @@ public class Tank {
 		Color c=g.getColor();
 		g.setColor(Color.RED);
 		//指定矩形,画内切圆
-		g.fillOval(x,y,30,30);
+		g.fillOval(x,y,WIDTH,HEIGHT);
 		//恢复
 		g.setColor(c);
+		//根据炮筒方向，画线段
+		switch(ptDir){
+		case L:
+			g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y+Tank.HEIGHT/2);
+			break;
+		case LU://左上
+			g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y);
+			break;
+		case U:
+			g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH/2,y);
+			break;
+		case RU://右上
+			g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH,y);
+			break;
+		case R:
+			g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH,y+Tank.HEIGHT/2);
+			break;
+		case D:
+			g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH/2,y+Tank.HEIGHT);
+			break;
+		case LD://左下
+			g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y+Tank.HEIGHT);
+			break;
+		case RD://右下
+			g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH,y+Tank.HEIGHT);
+			break;
+		}
 		move();
 	}
 	public void move(){
@@ -66,6 +98,10 @@ public class Tank {
 			break;
 		case STOP:
 			break;
+		}
+		//调整炮筒方向 
+		if(this.dir!=Direction.STOP){
+			this.ptDir=this.dir;
 		}
 	}
 	//移动坦克
@@ -129,7 +165,10 @@ public class Tank {
 	//开火
 	public Missile fire(){
 		//根据坦克的坐标，方向产生子弹
-		Missile m= new Missile(x,y,dir);
+		//根据坦克左上角坐标，算子弹坐标，使子弹从正中间发射
+		int x=this.x+Tank.WIDTH/2-Missile.WIDTH/2;
+		int y=this.y+Tank.HEIGHT/2-Missile.HEIGHT/2;
+		Missile m= new Missile(x,y,ptDir);
 		return m;
 	}
 }

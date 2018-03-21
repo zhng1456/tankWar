@@ -98,7 +98,6 @@ public class TankClient extends Frame{
 			// TODO Auto-generated method stub
 			myTank.keyPressed(e);
 		}
-		
 	}
 }
 	
