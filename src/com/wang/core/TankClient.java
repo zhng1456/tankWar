@@ -12,14 +12,20 @@ import java.awt.event.WindowEvent;
 public class TankClient extends Frame{
 	public static final int GAME_WIDTH=800;
 	public static final int GAME_HEIGHT=600;
-	//坐标
-	Tank myTank=new Tank(50,50);
+	//坦克
+	Tank myTank=new Tank(50,50,this);
+	//子弹
+	Missile m=null;
 	//利用缓冲解决闪烁的问题 
 	Image offScreenImage=null;
 	
 	@Override
 	public void paint(Graphics g) {
+		//画坦克
 		myTank.draw(g);
+		//画子弹
+		if(m!=null)
+		m.draw(g);
 	}
 	@Override
 	public void update(Graphics g) {

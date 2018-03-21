@@ -13,9 +13,15 @@ public class Tank {
 	//枚举类型，8个方向+停止状态
 	enum Direction {L,LU,U,RU,D,LD,R,RD,STOP};
 	private Direction dir=Direction.STOP;
+	TankClient tc;
 	public Tank(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	public Tank(int x, int y,TankClient tc){
+		this.x = x;
+		this.y = y;
+		this.tc=tc;
 	}
 	//画出坦克
 	public void draw(Graphics g){
@@ -69,6 +75,10 @@ public class Tank {
 		int key = e.getKeyCode();
 		//改变坐标，内部类中，可直接访问外部类的属性
 		switch(key){
+		//按下ctrl键
+		case KeyEvent.VK_CONTROL:
+			tc.m=fire();
+			break;
 		case KeyEvent.VK_UP:
 			bU=true;
 			break;
@@ -115,5 +125,11 @@ public class Tank {
 			break;
 		}
 		locateDirection();
+	}
+	//开火
+	public Missile fire(){
+		//根据坦克的坐标，方向产生子弹
+		Missile m= new Missile(x,y,dir);
+		return m;
 	}
 }
