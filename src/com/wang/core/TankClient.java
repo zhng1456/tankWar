@@ -15,8 +15,10 @@ import java.util.List;
 public class TankClient extends Frame{
 	public static final int GAME_WIDTH=800;
 	public static final int GAME_HEIGHT=600;
-	//坦克
-	Tank myTank=new Tank(50,50,this);
+	//自己的坦克
+	Tank myTank=new Tank(50,50,true,this);
+	//地方的坦克
+	Tank enemyTank = new Tank(100,100,false,this);
 	//子弹
 	//Missile m=null;
 	List<Missile> missiles=new ArrayList<Missile>();
@@ -28,10 +30,13 @@ public class TankClient extends Frame{
 		g.drawString("missiles count:"+missiles.size(),10,50);
 		//画坦克
 		myTank.draw(g);
+		enemyTank.draw(g);
 		//画子弹
 		for(int i=0;i<missiles.size();++i){
 			Missile m=missiles.get(i);
-			m.draw(g);
+			if(!m.isbLive()) missiles.remove(i);
+			else
+				m.draw(g);
 		}
 	}
 	@Override

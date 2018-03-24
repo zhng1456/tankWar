@@ -12,7 +12,16 @@ public class Missile {
 	public static final int HEIGHT=10;
 	//坐标
 	private int x,y;
+	//炮弹方向
 	private Tank.Direction dir;
+	//炮弹的生命
+	private boolean bLive=true;
+	public boolean isbLive() {
+		return bLive;
+	}
+	public void setbLive(boolean bLive) {
+		this.bLive = bLive;
+	}
 	public Missile(int x, int y,Tank.Direction dir) {
 		this.x = x;
 		this.y = y;
@@ -58,6 +67,10 @@ public class Missile {
 			x+=XSPEED;
 			y+=YSPEED;
 			break;
+		}
+		//判断是否出界
+		if(x<0||y<0||x>TankClient.GAME_WIDTH||y>TankClient.GAME_HEIGHT){
+			bLive=false;
 		}
 	}
 }

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
+import sun.awt.image.PixelConverter.Bgrx;
+
 public class Tank {
 	//速度常量
 	public static final int XSPEED=5;
@@ -18,21 +20,25 @@ public class Tank {
 	private Direction dir=Direction.STOP;
 	//炮筒的方向
 	private Direction ptDir=Direction.D;
+	//用于区分敌我
+	private boolean good;
 	TankClient tc;
-	public Tank(int x, int y) {
+	public Tank(int x, int y,boolean good) {
 		this.x = x;
 		this.y = y;
+		this.good=good;
 	}
-	public Tank(int x, int y,TankClient tc){
-		this.x = x;
-		this.y = y;
+	public Tank(int x, int y,boolean good,TankClient tc){
+		this(x,y,good);
 		this.tc=tc;
 	}
 	//画出坦克
 	public void draw(Graphics g){
 		//取到原先的颜色
 		Color c=g.getColor();
-		g.setColor(Color.RED);
+		//敌方，我方用不同的颜色
+		if(good)g.setColor(Color.RED);
+		else g.setColor(Color.BLUE);
 		//指定矩形,画内切圆
 		g.fillOval(x,y,WIDTH,HEIGHT);
 		//恢复
@@ -103,6 +109,13 @@ public class Tank {
 		if(this.dir!=Direction.STOP){
 			this.ptDir=this.dir;
 		}
+		//防止坦克越界
+		if(x<0) x=0;
+		//最上方的标题栏也会占一定的位置
+		if(y<30) y=30;
+		if(x+Tank.WIDTH>TankClient.GAME_WIDTH) x=TankClient.GAME_WIDTH-Tank.WIDTH;
+		if(y+Tank.HEIGHT>TankClient.GAME_HEIGHT) y=TankClient.GAME_HEIGHT-Tank.HEIGHT;
+		
 	}
 	//移动坦克
 	//按下键盘后改变状态标志，move中根据标志改变坐标
