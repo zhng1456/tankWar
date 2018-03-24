@@ -2,6 +2,7 @@ package com.wang.core;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class Missile {
 	//速度常量
@@ -16,6 +17,8 @@ public class Missile {
 	private Tank.Direction dir;
 	//炮弹的生命
 	private boolean bLive=true;
+	//tankClient
+	private TankClient tc;
 	public boolean isbLive() {
 		return bLive;
 	}
@@ -27,7 +30,15 @@ public class Missile {
 		this.y = y;
 		this.dir = dir;
 	}
+	public Missile(int x, int y,Tank.Direction dir,TankClient tc){
+		this(x,y,dir);
+		this.tc=tc;
+	}
 	public void draw(Graphics g){
+		if(!bLive){
+			tc.missiles.remove(this);
+			return;
+		}
 		Color c=g.getColor();
 		g.setColor(Color.black);
 		g.fillOval(x, y,WIDTH,HEIGHT);
@@ -72,5 +83,20 @@ public class Missile {
 		if(x<0||y<0||x>TankClient.GAME_WIDTH||y>TankClient.GAME_HEIGHT){
 			bLive=false;
 		}
+	}
+	//获得子弹外面的矩形
+	public Rectangle getRect(){
+		return new Rectangle(x,y,WIDTH,HEIGHT);
+	}
+	public boolean hitTank(Tank t){
+		//判断2个矩形是否相交
+		if(this.getRect().intersects(t.getRect())&&t.isLive()){
+			//将坦克状态设置为死亡
+			t.setLive(false);
+			//子弹也死亡 
+			this.bLive=false;
+			return true;
+		}
+		return false;
 	}
 }

@@ -2,6 +2,7 @@ package com.wang.core;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import sun.awt.image.PixelConverter.Bgrx;
@@ -22,6 +23,14 @@ public class Tank {
 	private Direction ptDir=Direction.D;
 	//用于区分敌我
 	private boolean good;
+	//坦克的生死
+	private boolean live=true;
+	public boolean isLive() {
+		return live;
+	}
+	public void setLive(boolean live) {
+		this.live = live;
+	}
 	TankClient tc;
 	public Tank(int x, int y,boolean good) {
 		this.x = x;
@@ -34,6 +43,8 @@ public class Tank {
 	}
 	//画出坦克
 	public void draw(Graphics g){
+		//死亡则直接return
+		if(!live) return;
 		//取到原先的颜色
 		Color c=g.getColor();
 		//敌方，我方用不同的颜色
@@ -181,7 +192,11 @@ public class Tank {
 		//根据坦克左上角坐标，算子弹坐标，使子弹从正中间发射
 		int x=this.x+Tank.WIDTH/2-Missile.WIDTH/2;
 		int y=this.y+Tank.HEIGHT/2-Missile.HEIGHT/2;
-		Missile m= new Missile(x,y,ptDir);
+		Missile m= new Missile(x,y,ptDir,this.tc);
 		return m;
+	}
+	//获得坦克外面的矩形
+	public Rectangle getRect(){
+		return new Rectangle(x,y,WIDTH,HEIGHT);
 	}
 }
