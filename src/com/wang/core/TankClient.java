@@ -22,15 +22,24 @@ public class TankClient extends Frame{
 	//子弹
 	//Missile m=null;
 	List<Missile> missiles=new ArrayList<Missile>();
+	//爆炸
+	List<Explode> explodes=new ArrayList<Explode>();
 	//利用缓冲解决闪烁的问题 
 	Image offScreenImage=null;
 	@Override
 	public void paint(Graphics g) {
 		//显示子弹数量
 		g.drawString("missiles count:"+missiles.size(),10,50);
+		//显示爆照数量 
+		g.drawString("explodes count:"+explodes.size(),10,70);
 		//画坦克
 		myTank.draw(g);
 		enemyTank.draw(g);
+		//画爆炸的效果
+		for(int i=0;i<explodes.size();++i){
+			Explode e=explodes.get(i);
+			e.draw(g);
+		}
 		//画子弹
 		for(int i=0;i<missiles.size();++i){
 			Missile m=missiles.get(i);

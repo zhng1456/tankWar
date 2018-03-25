@@ -95,6 +95,9 @@ public class Missile {
 			t.setLive(false);
 			//子弹也死亡 
 			this.bLive=false;
+			//产生爆炸
+			Explode e=new Explode(x, y, tc);
+			tc.explodes.add(e);
 			return true;
 		}
 		return false;
