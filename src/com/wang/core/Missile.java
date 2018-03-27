@@ -3,6 +3,7 @@ package com.wang.core;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.List;
 
 public class Missile {
 	//速度常量
@@ -99,6 +100,14 @@ public class Missile {
 			Explode e=new Explode(x, y, tc);
 			tc.explodes.add(e);
 			return true;
+		}
+		return false;
+	}
+	public boolean hitTanks(List<Tank> tanks){
+		for(int i=0;i<tanks.size();i++){
+			if(hitTank(tanks.get(i))){
+				return true;
+			}
 		}
 		return false;
 	}
