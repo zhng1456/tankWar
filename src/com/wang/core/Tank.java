@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 import sun.awt.image.PixelConverter.Bgrx;
 
@@ -25,6 +26,10 @@ public class Tank {
 	private boolean good;
 	//坦克的生死
 	private boolean live=true;
+	//随机数产生
+	private static Random r= new Random();
+	//步数，用于敌方坦克自动改变方向
+	private int step=r.nextInt(12)+3;
 	public boolean isLive() {
 		return live;
 	}
@@ -37,14 +42,20 @@ public class Tank {
 		this.y = y;
 		this.good=good;
 	}
-	public Tank(int x, int y,boolean good,TankClient tc){
+	public Tank(int x, int y,boolean good,Direction dir,TankClient tc){
 		this(x,y,good);
+		this.dir=dir;
 		this.tc=tc;
 	}
 	//画出坦克
 	public void draw(Graphics g){
 		//死亡则直接return
-		if(!live) return;
+		if(!live){
+			if(!good){
+				tc.tanks.remove(this);
+			}
+			return;
+		}
 		//取到原先的颜色
 		Color c=g.getColor();
 		//敌方，我方用不同的颜色
@@ -126,7 +137,17 @@ public class Tank {
 		if(y<30) y=30;
 		if(x+Tank.WIDTH>TankClient.GAME_WIDTH) x=TankClient.GAME_WIDTH-Tank.WIDTH;
 		if(y+Tank.HEIGHT>TankClient.GAME_HEIGHT) y=TankClient.GAME_HEIGHT-Tank.HEIGHT;
-		
+		//地方坦克通过随机数，自动改变方向
+		if(!good){
+			//将枚举类型转换为一个数组
+			Direction[] dirs=Direction.values();
+			if(step==0){
+				step=r.nextInt(12)+3;
+				int rn=r.nextInt(dirs.length);
+				dir=dirs[rn];
+			}
+			step--;
+		}
 	}
 	//移动坦克
 	//按下键盘后改变状态标志，move中根据标志改变坐标
