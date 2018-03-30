@@ -30,7 +30,7 @@ public class TankClient extends Frame{
 	public void paint(Graphics g) {
 		//显示子弹数量
 		g.drawString("missiles count:"+missiles.size(),10,50);
-		//显示爆照数量 
+		//显示爆炸数量 
 		g.drawString("explodes count:"+explodes.size(),10,70);
 		//显示敌方坦克数量
 		g.drawString("tanks count:"+tanks.size(),10,90);
@@ -50,6 +50,7 @@ public class TankClient extends Frame{
 		for(int i=0;i<missiles.size();++i){
 			Missile m=missiles.get(i);
 			//是否击中
+			m.hitTank(myTank);
 			m.hitTanks(tanks);
 			if(!m.isbLive()) missiles.remove(i);
 			else

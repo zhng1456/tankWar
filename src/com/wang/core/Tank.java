@@ -47,6 +47,10 @@ public class Tank {
 		this.dir=dir;
 		this.tc=tc;
 	}
+	
+	public boolean isGood() {
+		return good;
+	}
 	//画出坦克
 	public void draw(Graphics g){
 		//死亡则直接return
@@ -147,6 +151,13 @@ public class Tank {
 				dir=dirs[rn];
 			}
 			step--;
+			if(r.nextInt(40)>38){
+			//敌方坦克发射子弹
+			Missile m=this.fire();
+			//装入子弹的集合中
+			if(m!=null)
+			tc.missiles.add(m);
+			}
 		}
 	}
 	//移动坦克
@@ -190,7 +201,9 @@ public class Tank {
 		switch(key){
 		//抬起ctrl键则发射炮弹
 		case KeyEvent.VK_CONTROL:
-			tc.missiles.add(fire());
+			Missile m=fire();
+			if(m!=null)
+			tc.missiles.add(m);
 			break;
 		case KeyEvent.VK_UP:
 			bU=false;
@@ -209,11 +222,12 @@ public class Tank {
 	}
 	//开火
 	public Missile fire(){
+		if(!live) return null;
 		//根据坦克的坐标，方向产生子弹
 		//根据坦克左上角坐标，算子弹坐标，使子弹从正中间发射
 		int x=this.x+Tank.WIDTH/2-Missile.WIDTH/2;
 		int y=this.y+Tank.HEIGHT/2-Missile.HEIGHT/2;
-		Missile m= new Missile(x,y,ptDir,this.tc);
+		Missile m= new Missile(x,y,good,ptDir,this.tc);
 		return m;
 	}
 	//获得坦克外面的矩形

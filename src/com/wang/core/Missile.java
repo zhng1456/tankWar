@@ -18,6 +18,9 @@ public class Missile {
 	private Tank.Direction dir;
 	//炮弹的生命
 	private boolean bLive=true;
+	//表示我方，还是敌方的子弹，根据发出的坦克来设置
+	//我方坦克的子弹不攻击我方，敌方坦克的子弹，不攻击敌方
+	private boolean good;
 	//tankClient
 	private TankClient tc;
 	public boolean isbLive() {
@@ -31,8 +34,9 @@ public class Missile {
 		this.y = y;
 		this.dir = dir;
 	}
-	public Missile(int x, int y,Tank.Direction dir,TankClient tc){
+	public Missile(int x, int y,boolean good,Tank.Direction dir,TankClient tc){
 		this(x,y,dir);
+		this.good=good;
 		this.tc=tc;
 	}
 	public void draw(Graphics g){
@@ -91,7 +95,8 @@ public class Missile {
 	}
 	public boolean hitTank(Tank t){
 		//判断2个矩形是否相交
-		if(this.getRect().intersects(t.getRect())&&t.isLive()){
+		//并且要区分敌我双方的子弹，敌方子弹无法对敌方产生伤害
+		if(this.bLive&&t.isLive()&&this.getRect().intersects(t.getRect())&&t.isLive()&&this.good!=t.isGood()){
 			//将坦克状态设置为死亡
 			t.setLive(false);
 			//子弹也死亡 
