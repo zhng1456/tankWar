@@ -26,6 +26,9 @@ public class TankClient extends Frame{
 	List<Explode> explodes=new ArrayList<Explode>();
 	//利用缓冲解决闪烁的问题 
 	Image offScreenImage=null;
+	//墙
+	Wall w1=new Wall(100,200,20,150,this);
+	Wall w2=new Wall(300,100,300,20,this);
 	@Override
 	public void paint(Graphics g) {
 		//显示子弹数量
@@ -36,9 +39,15 @@ public class TankClient extends Frame{
 		g.drawString("tanks count:"+tanks.size(),10,90);
 		//画坦克
 		myTank.draw(g);
+		//画墙
+		w1.draw(g);
+		w2.draw(g);
 		//画地方的坦克
 		for(int i=0;i<tanks.size();i++){
 			Tank t=tanks.get(i);
+			//判断是否与墙相撞
+			t.collideWithWall(w1);
+			t.collideWithWall(w2);
 			t.draw(g);
 		}
 		//画爆炸的效果
@@ -52,6 +61,9 @@ public class TankClient extends Frame{
 			//是否击中
 			m.hitTank(myTank);
 			m.hitTanks(tanks);
+			//子弹与墙碰撞
+			m.hitWall(w1);
+			m.hitWall(w2);
 			if(!m.isbLive()) missiles.remove(i);
 			else
 				m.draw(g);

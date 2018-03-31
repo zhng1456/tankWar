@@ -15,7 +15,10 @@ public class Tank {
 	//坦克大小常量
 	public static final int WIDTH=30;
 	public static final int HEIGHT=30;
+	//坐标
 	private int x,y;
+	//上一步的坐标
+	private int oldX,oldY;
 	private boolean bL=false,bU=false,bR=false,bD=false;
 	//枚举类型，坦克的方向，8个方向+停止状态
 	enum Direction {L,LU,U,RU,D,LD,R,RD,STOP};
@@ -40,6 +43,8 @@ public class Tank {
 	public Tank(int x, int y,boolean good) {
 		this.x = x;
 		this.y = y;
+		this.oldX=x;
+		this.oldY=y;
 		this.good=good;
 	}
 	public Tank(int x, int y,boolean good,Direction dir,TankClient tc){
@@ -99,6 +104,9 @@ public class Tank {
 		move();
 	}
 	public void move(){
+		//记录x，y，作为上一步的x,y
+		this.oldX=x;
+		this.oldY=y;
 		switch(dir){
 		case L:
 			x-=XSPEED;
@@ -159,6 +167,7 @@ public class Tank {
 			tc.missiles.add(m);
 			}
 		}
+		
 	}
 	//移动坦克
 	//按下键盘后改变状态标志，move中根据标志改变坐标
@@ -233,5 +242,17 @@ public class Tank {
 	//获得坦克外面的矩形
 	public Rectangle getRect(){
 		return new Rectangle(x,y,WIDTH,HEIGHT);
+	}
+	//与墙碰撞
+	public boolean collideWithWall(Wall w){
+		if(this.live&&this.getRect().intersects(w.getRect())){
+			stay();//返回上一次的位置
+			return true;
+		}
+		return false;
+	}
+	private void stay(){
+		x=oldX;
+		y=oldY;
 	}
 }

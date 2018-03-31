@@ -116,4 +116,12 @@ public class Missile {
 		}
 		return false;
 	}
+	//判断子弹与墙是否相撞
+	public boolean hitWall(Wall w){
+		if(this.bLive&&this.getRect().intersects(w.getRect())){
+			this.bLive=false;
+			return true;
+		}
+		return false;
+	}
 }
