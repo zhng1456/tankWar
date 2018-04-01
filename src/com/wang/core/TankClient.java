@@ -48,6 +48,8 @@ public class TankClient extends Frame{
 			//判断是否与墙相撞
 			t.collideWithWall(w1);
 			t.collideWithWall(w2);
+			//判断坦克与坦克是否相撞了
+			t.collideWithTank(tanks);
 			t.draw(g);
 		}
 		//画爆炸的效果

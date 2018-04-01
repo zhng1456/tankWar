@@ -4,9 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.util.List;
 import java.util.Random;
-
-import sun.awt.image.PixelConverter.Bgrx;
 
 public class Tank {
 	//速度常量
@@ -254,5 +253,19 @@ public class Tank {
 	private void stay(){
 		x=oldX;
 		y=oldY;
+	}
+	//增加坦克与坦克间的碰撞检测，坦克无法越过坦克
+	public boolean collideWithTank(List<Tank> tanks){
+		for(int i=0;i<tanks.size();++i){
+			Tank t=tanks.get(i);
+			if(this!=t){//不是同一辆坦克
+				if(this.live&&t.isLive()&&this.getRect().intersects(t.getRect())){
+					this.stay();//返回上一次的位置
+					t.stay();
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
