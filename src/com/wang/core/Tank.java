@@ -22,6 +22,8 @@ public class Tank {
 	//枚举类型，坦克的方向，8个方向+停止状态
 	enum Direction {L,LU,U,RU,D,LD,R,RD,STOP};
 	private Direction dir=Direction.STOP;
+	//生命值
+	private int life=100;
 	//炮筒的方向
 	private Direction ptDir=Direction.D;
 	//用于区分敌我
@@ -38,6 +40,14 @@ public class Tank {
 	public void setLive(boolean live) {
 		this.live = live;
 	}
+	
+	public int getLife() {
+		return life;
+	}
+	public void setLife(int life) {
+		this.life = life;
+	}
+
 	TankClient tc;
 	public Tank(int x, int y,boolean good) {
 		this.x = x;

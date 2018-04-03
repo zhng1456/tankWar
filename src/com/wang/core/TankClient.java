@@ -37,6 +37,8 @@ public class TankClient extends Frame{
 		g.drawString("explodes count:"+explodes.size(),10,70);
 		//显示敌方坦克数量
 		g.drawString("tanks count:"+tanks.size(),10,90);
+		//显示坦克生命值
+		g.drawString("tank life:"+myTank.getLife(),10,110);
 		//画坦克
 		myTank.draw(g);
 		//画墙

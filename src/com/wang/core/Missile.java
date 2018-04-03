@@ -97,8 +97,13 @@ public class Missile {
 		//判断2个矩形是否相交
 		//并且要区分敌我双方的子弹，敌方子弹无法对敌方产生伤害
 		if(this.bLive&&t.isLive()&&this.getRect().intersects(t.getRect())&&t.isLive()&&this.good!=t.isGood()){
-			//将坦克状态设置为死亡
-			t.setLive(false);
+			if(t.isGood()){//如果是主战坦克
+				t.setLife(t.getLife()-20);
+				if(t.getLife()<=0) t.setLive(false);
+			}
+			else{//将坦克状态设置为死亡
+				t.setLive(false);
+			}
 			//子弹也死亡 
 			this.bLive=false;
 			//产生爆炸
