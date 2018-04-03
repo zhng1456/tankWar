@@ -225,6 +225,9 @@ public class Tank {
 		case KeyEvent.VK_RIGHT:
 			bR=false;
 			break;
+		case KeyEvent.VK_A:
+			superFire();
+			break;
 		}
 		locateDirection();
 	}
@@ -237,6 +240,23 @@ public class Tank {
 		int y=this.y+Tank.HEIGHT/2-Missile.HEIGHT/2;
 		Missile m= new Missile(x,y,good,ptDir,this.tc);
 		return m;
+	}
+	//朝某个方向开火
+	public Missile fire(Direction dir){
+		if(!live) return null;
+		//根据坦克的坐标，方向产生子弹
+		//根据坦克左上角坐标，算子弹坐标，使子弹从正中间发射
+		int x=this.x+Tank.WIDTH/2-Missile.WIDTH/2;
+		int y=this.y+Tank.HEIGHT/2-Missile.HEIGHT/2;
+		Missile m= new Missile(x,y,good,dir,this.tc);
+		return m;
+	}
+	//超级炮弹，按下后朝8个方向开火
+	private void superFire(){
+		Direction[] dirs=Direction.values();
+		for(int i=0;i<8;i++){
+			tc.missiles.add(fire(dirs[i]));
+		}
 	}
 	//获得坦克外面的矩形
 	public Rectangle getRect(){
