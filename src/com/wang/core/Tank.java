@@ -34,6 +34,8 @@ public class Tank {
 	private static Random r= new Random();
 	//步数，用于敌方坦克自动改变方向
 	private int step=r.nextInt(12)+3;
+	//血条
+	private BloodBar bb=new BloodBar();
 	public boolean isLive() {
 		return live;
 	}
@@ -83,6 +85,9 @@ public class Tank {
 		g.fillOval(x,y,WIDTH,HEIGHT);
 		//恢复
 		g.setColor(c);
+		//主战坦克画出血条
+		if(good)
+		bb.draw(g);
 		//根据炮筒方向，画线段
 		switch(ptDir){
 		case L:
@@ -297,5 +302,18 @@ public class Tank {
 			}
 		}
 		return false;
+	}
+	//内部类，坦克的血条
+	private class BloodBar{
+		public void draw(Graphics g){
+			Color c=g.getColor();
+			//画空心的方块
+			g.setColor(Color.RED);
+			g.drawRect(x,y-10,WIDTH,10);
+			//画实心的方块
+			int w=WIDTH*life/100;
+			g.fillRect(x,y-10,w,10);
+			g.setColor(c);
+		}
 	}
 }
