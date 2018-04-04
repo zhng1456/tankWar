@@ -29,6 +29,8 @@ public class TankClient extends Frame{
 	//墙
 	Wall w1=new Wall(100,200,20,150,this);
 	Wall w2=new Wall(300,100,300,20,this);
+	//血包
+	Blood b=new Blood();
 	@Override
 	public void paint(Graphics g) {
 		//显示子弹数量
@@ -44,6 +46,10 @@ public class TankClient extends Frame{
 		//画墙
 		w1.draw(g);
 		w2.draw(g);
+		//画血包
+		b.draw(g);
+		//吃血包
+		myTank.eat(b);
 		//画地方的坦克
 		for(int i=0;i<tanks.size();i++){
 			Tank t=tanks.get(i);
