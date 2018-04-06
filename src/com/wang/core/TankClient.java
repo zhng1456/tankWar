@@ -41,6 +41,12 @@ public class TankClient extends Frame{
 		g.drawString("tanks count:"+tanks.size(),10,90);
 		//显示坦克生命值
 		g.drawString("tank life:"+myTank.getLife(),10,110);
+		//若敌人已死光，则重新加入敌人
+		if(tanks.size()<=0){
+			for(int i=0;i<5;i++){
+				tanks.add(new Tank(50+40*(i+1),50,false,Tank.Direction.D,this));
+			}
+		}
 		//画坦克
 		myTank.draw(g);
 		//画墙

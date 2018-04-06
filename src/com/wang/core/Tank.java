@@ -190,6 +190,13 @@ public class Tank {
 		int key = e.getKeyCode();
 		//改变坐标，内部类中，可直接访问外部类的属性
 		switch(key){
+		//按F2重新开始
+		case KeyEvent.VK_F2:
+			if(!live){
+				live=true;
+				life=100;
+			}
+			break;
 		case KeyEvent.VK_UP:
 			bU=true;
 			break;

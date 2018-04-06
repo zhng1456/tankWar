@@ -13,6 +13,7 @@ public class Blood {
 	int step=0;
 	//生死
 	private boolean live=true;
+	//血块运动的坐标
 	private int[][] pos={
 			{350,300},
 			{360,300},
