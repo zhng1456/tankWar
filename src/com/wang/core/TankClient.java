@@ -16,7 +16,7 @@ public class TankClient extends Frame{
 	public static final int GAME_WIDTH=800;
 	public static final int GAME_HEIGHT=600;
 	//自己的坦克
-	Tank myTank=new Tank(50,50,true,Tank.Direction.STOP,this);
+	Tank myTank=new Tank(50,50,true,Dir.STOP,this);
 	//敌方的坦克
 	List<Tank> tanks=new ArrayList<Tank>();
 	//子弹
@@ -36,7 +36,7 @@ public class TankClient extends Frame{
 		g.drawString("tanks count:"+tanks.size(),10,90);
 		//画坦克
 		myTank.draw(g);
-		//画地方的坦克
+		//画敌方的坦克
 		for(int i=0;i<tanks.size();i++){
 			Tank t=tanks.get(i);
 			t.draw(g);
@@ -74,9 +74,11 @@ public class TankClient extends Frame{
 	}
 	public void lauchFrame(){
 		//添加敌方的坦克
+		/*
 		for(int i=0;i<10;i++){
-			tanks.add(new Tank(50+40*(i+1),50,false,Tank.Direction.D,this));
+			tanks.add(new Tank(50+40*(i+1),50,false,Dir.D,this));
 		}
+		*/
 		this.setLocation(400,300);
 		this.setSize(GAME_WIDTH,GAME_HEIGHT);
 		this.setTitle("tankWar");

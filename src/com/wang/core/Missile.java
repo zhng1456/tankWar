@@ -15,7 +15,7 @@ public class Missile {
 	//坐标
 	private int x,y;
 	//炮弹方向
-	private Tank.Direction dir;
+	private Dir dir;
 	//炮弹的生命
 	private boolean bLive=true;
 	//表示我方，还是敌方的子弹，根据发出的坦克来设置
@@ -29,12 +29,12 @@ public class Missile {
 	public void setbLive(boolean bLive) {
 		this.bLive = bLive;
 	}
-	public Missile(int x, int y,Tank.Direction dir) {
+	public Missile(int x, int y,Dir dir) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 	}
-	public Missile(int x, int y,boolean good,Tank.Direction dir,TankClient tc){
+	public Missile(int x, int y,boolean good,Dir dir,TankClient tc){
 		this(x,y,dir);
 		this.good=good;
 		this.tc=tc;

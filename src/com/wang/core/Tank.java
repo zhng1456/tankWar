@@ -18,10 +18,9 @@ public class Tank {
 	private int x,y;
 	private boolean bL=false,bU=false,bR=false,bD=false;
 	//枚举类型，坦克的方向，8个方向+停止状态
-	enum Direction {L,LU,U,RU,D,LD,R,RD,STOP};
-	private Direction dir=Direction.STOP;
+	private Dir dir=Dir.STOP;
 	//炮筒的方向
-	private Direction ptDir=Direction.D;
+	private Dir ptDir=Dir.D;
 	//用于区分敌我
 	private boolean good;
 	//坦克的生死
@@ -42,7 +41,7 @@ public class Tank {
 		this.y = y;
 		this.good=good;
 	}
-	public Tank(int x, int y,boolean good,Direction dir,TankClient tc){
+	public Tank(int x, int y,boolean good,Dir dir,TankClient tc){
 		this(x,y,good);
 		this.dir=dir;
 		this.tc=tc;
@@ -132,7 +131,7 @@ public class Tank {
 			break;
 		}
 		//调整炮筒方向 
-		if(this.dir!=Direction.STOP){
+		if(this.dir!=Dir.STOP){
 			this.ptDir=this.dir;
 		}
 		//防止坦克越界
@@ -144,7 +143,7 @@ public class Tank {
 		//地方坦克通过随机数，自动改变方向
 		if(!good){
 			//将枚举类型转换为一个数组
-			Direction[] dirs=Direction.values();
+			Dir[] dirs=Dir.values();
 			if(step==0){
 				step=r.nextInt(12)+3;
 				int rn=r.nextInt(dirs.length);
@@ -183,15 +182,15 @@ public class Tank {
 		locateDirection();
 	}
 	void locateDirection(){
-		if(bL && !bU && !bR && !bD) dir=Direction.L;//左
-		else if(!bL && bU && !bR && !bD) dir=Direction.U;//上
-		else if(!bL && !bU && bR && !bD) dir=Direction.R;//右
-		else if(!bL && !bU && !bR && bD) dir=Direction.D;//下
-		else if(bL && bU && !bR && !bD) dir=Direction.LU;//左上
-		else if(!bL && bU && bR && !bD) dir=Direction.RU;//右上
-		else if(bL && !bU && !bR && bD) dir=Direction.LD;//左下
-		else if(!bL && !bU && bR && bD) dir=Direction.RD;//右下
-		else if(!bL && !bU && !bR && !bD) dir=Direction.STOP;
+		if(bL && !bU && !bR && !bD) dir=Dir.L;//左
+		else if(!bL && bU && !bR && !bD) dir=Dir.U;//上
+		else if(!bL && !bU && bR && !bD) dir=Dir.R;//右
+		else if(!bL && !bU && !bR && bD) dir=Dir.D;//下
+		else if(bL && bU && !bR && !bD) dir=Dir.LU;//左上
+		else if(!bL && bU && bR && !bD) dir=Dir.RU;//右上
+		else if(bL && !bU && !bR && bD) dir=Dir.LD;//左下
+		else if(!bL && !bU && bR && bD) dir=Dir.RD;//右下
+		else if(!bL && !bU && !bR && !bD) dir=Dir.STOP;
 	}
 	//释放按键
 	public void keyReleased(KeyEvent e){
