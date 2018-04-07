@@ -26,6 +26,8 @@ public class TankClient extends Frame{
 	List<Explode> explodes=new ArrayList<Explode>();
 	//利用缓冲解决闪烁的问题 
 	Image offScreenImage=null;
+	//网络客户端
+	NetClient nc=new NetClient();
 	@Override
 	public void paint(Graphics g) {
 		//显示子弹数量
@@ -98,6 +100,8 @@ public class TankClient extends Frame{
 		setVisible(true);
 		//启动线程
 		new Thread(new PaintThread()).start();
+		//连接服务器
+		nc.connect("127.0.1",TankServer.TCP_PORT);
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
