@@ -29,6 +29,14 @@ public class Tank {
 	private static Random r= new Random();
 	//步数，用于敌方坦克自动改变方向
 	private int step=r.nextInt(12)+3;
+	//坦克的id号
+	private int id;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public boolean isLive() {
 		return live;
 	}
@@ -66,6 +74,8 @@ public class Tank {
 		else g.setColor(Color.BLUE);
 		//指定矩形,画内切圆
 		g.fillOval(x,y,WIDTH,HEIGHT);
+		//显示tank的id
+		g.drawString("id:"+id,x,y-10);
 		//恢复
 		g.setColor(c);
 		//根据炮筒方向，画线段

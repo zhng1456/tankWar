@@ -27,7 +27,7 @@ public class TankClient extends Frame{
 	//利用缓冲解决闪烁的问题 
 	Image offScreenImage=null;
 	//网络客户端
-	NetClient nc=new NetClient();
+	NetClient nc=new NetClient(this);
 	@Override
 	public void paint(Graphics g) {
 		//显示子弹数量
