@@ -3,8 +3,11 @@ package com.wang.core;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +21,14 @@ public class TankServer {
 	 * TCP监听端口
 	 */
 	public static final int TCP_PORT=8888;
+	public static final int UDP_PORT=6666;
 	//客户端的标识
 	private static int ID=100;
 	//一系列连上来的客户端
 	List<Client> clients=new ArrayList<Client>();
 	public void start(){
+		//启动UDP的线程
+		new Thread(new UDPThread()).start();
 		ServerSocket ss=null;
 		try {
 			ss=new ServerSocket(TCP_PORT);
@@ -30,6 +36,7 @@ public class TankServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("UDP Thread start at port:"+UDP_PORT);
 		while(true){
 			Socket s=null;
 			try {
@@ -77,5 +84,31 @@ public class TankServer {
 			this.udpPort = udpPort;
 		}
 		
+	}
+	private class UDPThread implements Runnable{
+		byte[] buf=new byte[1024];
+		/**
+		 * 接受客户端发来的数据，并转发给其他客户端
+		 */
+		public void run() {
+			// TODO Auto-generated method stub
+				DatagramSocket ds=null;
+				try {
+					ds=new DatagramSocket(UDP_PORT);
+				} catch (SocketException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			while(ds!=null){
+				DatagramPacket dp=new DatagramPacket(buf,buf.length);
+				try {
+					ds.receive(dp);
+					System.out.println("a packet recieve!");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

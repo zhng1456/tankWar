@@ -3,17 +3,26 @@ package com.wang.core;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class NetClient {
 	//UDP端口的起始端口
 	private static int UDP_PORT_START=2223;
 	private int udpPort;
+	private DatagramSocket ds=null;
 	TankClient tc;
 	public NetClient(TankClient tc){
 		this.tc=tc;
 		udpPort=UDP_PORT_START++;
+		try {
+			ds=new DatagramSocket(udpPort);
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void connect(String IP,int port){
 		Socket s=null;
@@ -45,6 +54,10 @@ public class NetClient {
 				}
 			}
 		}
+		TankNewMsg msg=new TankNewMsg(tc.myTank);
+		send(msg);
 	}
-	
+	public void send(TankNewMsg msg){
+		msg.send(ds,"127.0.0.1",TankServer.UDP_PORT);
+	}
 }
