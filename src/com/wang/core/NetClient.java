@@ -1,9 +1,12 @@
 package com.wang.core;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -56,8 +59,42 @@ public class NetClient {
 		}
 		TankNewMsg msg=new TankNewMsg(tc.myTank);
 		send(msg);
+		
+		new Thread(new UDPRecieveThread()).start();
 	}
 	public void send(TankNewMsg msg){
 		msg.send(ds,"127.0.0.1",TankServer.UDP_PORT);
 	}
+	/**
+	 * 内部类，客户端UDP的接收线程
+	 * @author Administrator
+	 *
+	 */
+	private class UDPRecieveThread implements Runnable{
+		byte[] buf=new byte[1024];
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+		while(ds!=null){
+			DatagramPacket dp=new DatagramPacket(buf,buf.length);
+			try {
+				ds.receive(dp);
+				System.out.println("a packet recieve from server");
+				//开始解析
+				parse(dp);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+		private void parse(DatagramPacket dp) {
+			// TODO Auto-generated method stub
+			ByteArrayInputStream bais=new ByteArrayInputStream(buf,0,dp.getLength());
+			DataInputStream dis=new DataInputStream(bais);
+			//解析 
+			TankNewMsg msg=new TankNewMsg();
+			msg.parse(dis);
+		}
+}
 }

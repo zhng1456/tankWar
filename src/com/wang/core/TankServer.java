@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -104,7 +105,13 @@ public class TankServer {
 				try {
 					ds.receive(dp);
 					System.out.println("a packet recieve!");
-				} catch (IOException e) {
+					//将数据转发给其他客户端
+					for(int i=0;i<clients.size();i++){
+						Client c=clients.get(i);
+						dp.setSocketAddress(new InetSocketAddress(c.IP,c.udpPort));
+						ds.send(dp);
+					}
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
